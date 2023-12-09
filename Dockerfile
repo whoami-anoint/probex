@@ -27,6 +27,6 @@ WORKDIR /code
 COPY --from=python-stage /code /code
 COPY --from=golang-stage /usr/local/go /usr/local/go
 COPY requirements.txt /code/
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir -r /code/requirements.txt
 EXPOSE 8000
 CMD ["python", "app.py"]
