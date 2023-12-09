@@ -28,5 +28,7 @@ COPY --from=python-stage /code /code
 COPY --from=golang-stage /usr/local/go /usr/local/go
 COPY requirements.txt /code/
 RUN pip install --no-cache-dir -r /code/requirements.txt
+
+RUN apt install dirb -y 
 EXPOSE 8000
 CMD ["python", "app.py"]
