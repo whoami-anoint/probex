@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vulnerability Scan</title>
+    <style>
+        body {
+            font-family: 'Courier New', monospace;
+            background-color: #1a1a1a;
+            color: #00ff00;
+            margin: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #00ff00;
+            margin-bottom: 20px;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .navigation a {
+            padding: 10px;
+            margin: 0 10px;
+            color: #00ff00;
+            text-decoration: none;
+            font-size: 16px;
+            border-radius: 5px;
+        }
+
+        .navigation a:hover {
+            background-color: #00cc00;
+        }
+
+        .results-container {
+            background-color: #333;
+            padding: 20px;
+            border-radius: 5px;
+            display: none;
+        }
+
+        .input-container {
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: bold;
+            color: #00ff00;
+            font-size: 18px;
+        }
+
+        input {
+            padding: 10px;
+            width: 300px;
+            font-size: 16px;
+            border: 1px solid #00ff00;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+
+        button {
+            padding: 12px;
+            background-color: #00ff00;
+            color: black;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #00cc00;
+        }
+
+        h2 {
+            color: #00ff00;
+            margin-top: 20px;
+        }
+
+        pre {
+            white-space: pre-wrap;
+            color: #00ff00;
+            font-size: 16px;
+        }
+
+        .ascii-art {
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+
+        .progress {
+            margin-top: 10px;
+            font-weight: bold;
+            color: #00ff00;
+        }
+
+        .scan-status {
+            font-weight: bold;
+            color: #00ff00;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="ascii-art">
+        <pre>
+        _____ _                 _    _____          _    
+       / ____| |               | |  / ____|        | |   
+      | |  __| | __ _ _ __ ___ | |_| |     ___   __| | __
+      | | |_ | |/ _` | '_ ` _ \| __| |    / _ \ / _` |/ /
+      | |__| | | (_| | | | | | | |_| |___| (_) | (_|   < 
+       \_____|_|\__,_|_| |_| |_|\__|\_____\___/ \__,_|\_\
+        </pre>
+    </div>
+
+    <h1>Web Reconnaissance</h1>
+
+    <div class="input-container">
+        <label for="target_domain">Enter Target Domain :</label>
+        <input type="text" id="target_domain" name="target_domain" required>
+        <button type="button" onclick="startScan('technology')">Initiate Scan</button>
+    </div>
+
+    <button type="button" onclick="whoisNumber()">WhoisNumber</button>
+
+    <div class="progress" id="progress"></div>
+
+    <div class="navigation">
+        <a href="#" onclick="showPage('technology')">Technology Used</a>
+        <a href="#" onclick="showPage('subdomains')">Subdomains</a>
+        <a href="#" onclick="showPage('WebArchive')">WebArchiveURL</a>
+        <a href="#" onclick="showPage('HiddenDirectory')">HiddenDirectory</a>
+        <a href="#" onclick="showPage('cve')">CVE</a>
+    </div>
+
+    <div id="technology" class="results-container">
+        <h2>Technology Used</h2>
+        <div id="technology-results"></div>
+        <div class="scan-status" id="technology-status"></div>
+    </div>
+
+    <div id="subdomains" class="results-container">
+        <h2>Subdomains</h2>
+        <div id="subdomains-results"></div>
+        <div class="scan-status" id="subdomains-status"></div>
+    </div>
+
+    <div id="WebArchive" class="results-container">
+        <h2>WebArchiveURL</h2>
+        <div id="WebArchive-results"></div>
+        <div class="scan-status" id="WebArchive-status"></div>
+    </div>
+
+    <div id="HiddenDirectory" class="results-container">
+        <h2>HiddenDirectory</h2>
+        <div id="HiddenDirectory-results"></div>
+        <div class="scan-status" id="HiddenDirectory-status"></div>
+    </div>
+
+    <div id="cve" class="results-container">
+        <h2>CVE</h2>
+        <div id="cve-results"></div>
+        <div class="scan-status" id="cve-status"></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.1.2/socket.io.js"></script>
+    <script>
+        var socket = io.connect('http://' + document.domain + ':' + location.port);
+
+        // Listen for real-time updates
+        socket.on('technology_result', function(result) {
+            displayResult('technology', 'Technology Used:', result);
+        });
+
+        socket.on('subdomains_result', function(result) {
+            displayResult('subdomains', 'Subdomains:', result);
+        });
+
+        socket.on('WebArchive_result', function(result) {
+            displayResult('WebArchive', 'WebArchiveURL:', result);
+        });
+
+        socket.on('HiddenDirectory_result', function(result) {
+            displayResult('HiddenDirectory', 'Hidden Directory:', result);
+        });
+
+        socket.on('nuclei_result', function(result) {
+            displayResult('cve', 'Nuclei CVE Scan:', result);
+        });
+
+        socket.on('scan_status', function(status) {
+            updateScanStatus(status);
+        });
+
+        socket.on('whois_number_result', function(result) {
+            displayResult('whois_number', 'WhoisNumber Result:', result);
+        });
+
+        function showPage(pageId) {
+            // Hide all result containers
+            var containers = document.getElementsByClassName('results-container');
+            for (var i = 0; i < containers.length; i++) {
+                containers[i].style.display = 'none';
+            }
+
+            // Show the selected result container
+            document.getElementById(pageId).style.display = 'block';
+        }
+
+        function startScan(pageId) {
+            var targetDomain = document.getElementById('target_domain').value;
+            socket.emit('start_scan', { target_domain: targetDomain });
+
+            // Display progress
+            document.getElementById('progress').innerText = 'Scan in progress...';
+
+            // Clear previous results and status
+            document.getElementById(pageId + '-results').innerHTML = '';
+            document.getElementById(pageId + '-status').innerText = '';
+        }
+
+        function whoisNumber() {
+            var phoneNumber = prompt("Enter a phone number for WhoisNumber:");
+            if (phoneNumber !== null) {
+                socket.emit('whois_number', { phone_number: phoneNumber });
+            }
+        }
+
+        function displayResult(pageId, title, result) {
+            document.getElementById(pageId + '-results').innerHTML = '<h3>' + title + '</h3><pre>' + result + '</pre>';
+        }
+
+        function updateScanStatus(status) {
+            document.getElementById('technology-status').innerText = status.technology ? 'Technology scan complete' : 'Technology scan in progress';
+            document.getElementById('subdomains-status').innerText = status.subdomains ? 'Subdomains scan complete' : 'Subdomains scan in progress';
+            document.getElementById('WebArchive-status').innerText = status.WebArchive ? 'WebArchive scan complete' : 'WebArchive scan in progress';
+            document.getElementById('HiddenDirectory-status').innerText = status.HiddenDirectory ? 'HiddenDirectory scan complete' : 'HiddenDirectory scan in progress';
+            document.getElementById('cve-status').innerText = status.cve ? 'CVE scan complete' : 'CVE scan in progress';
+        }
+    </script>
+</body>
+</html>
