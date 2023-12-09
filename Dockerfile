@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 # Stage 1: Python setup
 FROM python:3.9 AS python-stage
 ENV PYTHONDONTWRITEBYTECODE 1
@@ -33,4 +31,3 @@ COPY requirements.txt /code/
 RUN pip install --no-cache-dir -r /code/requirements.txt
 EXPOSE 8000
 CMD ["python", "app.py"]
->>>>>>> 4208303 (upload dockerfile)
