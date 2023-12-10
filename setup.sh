@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# webtech
-pip install webtech
-
 # assetfinder
 GO111MODULE=on go get -u github.com/tomnomnom/assetfinder
 
