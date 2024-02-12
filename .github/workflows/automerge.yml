@@ -24,4 +24,4 @@ env:
           MERGE_REQUIRED_APPROVALS: "0"
           UPDATE_LABELS: ""
           UPDATE_METHOD: "merge"
-          PULL_REQUEST: "4"
+          # PULL_REQUEST: "4"
