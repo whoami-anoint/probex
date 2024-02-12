@@ -1,4 +1,4 @@
-name: Merge to Main
+name: Automerge to Main
 
 on:
   push:
@@ -6,22 +6,17 @@ on:
       - dev
 
 jobs:
-  merge-to-main:
+  automerge:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Check out code
+      - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Merge to main if needed
+      - name: Merge to main
         run: |
-          git fetch origin
-          if git merge-base --is-ancestor main origin/dev; then
-            echo "Dev branch has changes to be merged to main"
-            git checkout main
-            git pull origin main
-            git merge dev --no-ff --no-edit
-            git push origin main
-          else
-            echo "No changes in dev branch since last merge to main"
-          fi
+          git checkout main
+          git pull origin main
+          git merge dev --no-edit || (echo "Merge conflict occurred"; exit 1)
+          # Exit 1 if merge has conflicts
+          git push origin main
