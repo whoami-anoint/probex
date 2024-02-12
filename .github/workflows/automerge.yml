@@ -1,28 +1,30 @@
-name: automerge
+name: Automerge dev to main
+
 on:
   pull_request:
-    types:
-      - labeled
-      - unlabeled
-      - synchronize
-      - opened
-      - edited
-      - ready_for_review
-      - reopened
-      - unlocked
-  pull_request_review:
-    types:
-      - submitted
-  check_suite:
-    types:
-      - completed
-  status: {}
+    branches:
+      - dev
+
 jobs:
   automerge:
     runs-on: ubuntu-latest
+
     steps:
-      - id: automerge
-        name: automerge
-        uses: "pascalgn/automerge-action@v0.16.2"
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Merge PR to main
+        run: |
+          # Check out the PR branch
+          git fetch origin pull/${{ github.event.pull_request.number }}/head:pr-${{ github.event.pull_request.number }}
+          git checkout pr-${{ github.event.pull_request.number }}
+          
+          # Merge PR branch into main
+          git checkout main
+          git merge --no-ff pr-${{ github.event.pull_request.number }} -m "Automatically merged PR #${{ github.event.pull_request.number }}"
+          
+          # Push changes to GitHub
+          git push origin main
+
         env:
-          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
