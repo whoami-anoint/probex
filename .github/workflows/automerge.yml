@@ -1,10 +1,8 @@
 name: automerge
 on:
   push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
-
+    branches: [ "dev" ]
+    
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -24,4 +22,5 @@ env:
           MERGE_REQUIRED_APPROVALS: "0"
           UPDATE_LABELS: ""
           UPDATE_METHOD: "merge"
+          BASE_BRANCHES : "main"
           # PULL_REQUEST: "4"
