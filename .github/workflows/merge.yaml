@@ -1,0 +1,27 @@
+name: Merge to Main
+
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  merge-to-main:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Merge to main if needed
+        run: |
+          git fetch origin
+          if git merge-base --is-ancestor main origin/dev; then
+            echo "Dev branch has changes to be merged to main"
+            git checkout main
+            git pull origin main
+            git merge dev --no-ff --no-edit
+            git push origin main
+          else
+            echo "No changes in dev branch since last merge to main"
+          fi
