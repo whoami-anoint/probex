@@ -25,4 +25,4 @@ env:
           MERGE_REQUIRED_APPROVALS: "0"
           UPDATE_LABELS: ""
           UPDATE_METHOD: "rebase"
-          PULL_REQUEST: "8"
+          PULL_REQUEST: "${{ github.event.pull_request.number }}"
