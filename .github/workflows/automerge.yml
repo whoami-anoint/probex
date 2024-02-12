@@ -17,7 +17,7 @@ env:
           URL: "https://github.com/whoami-anoint/probex/pull/6"
           MERGE_LABELS: "automerge,!work in progress"
           MERGE_REMOVE_LABELS: "automerge"
-          MERGE_METHOD: "squash"
+          MERGE_METHOD: "merge"
           MERGE_COMMIT_MESSAGE: "pull-request-description"
           MERGE_FORKS: "false"
           MERGE_RETRIES: "6"
