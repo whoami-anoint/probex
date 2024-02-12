@@ -1,21 +1,28 @@
-name: Automerge dev to main
-
+name: automerge
 on:
   push:
-    branches:
-      - dev
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
 
 jobs:
-  automerge:
+  build:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Merge changes into main
-        run: |
-          git fetch origin
-          git checkout main
-          git merge --no-ff origin/dev -m "Automatically merge changes from dev into main"
-          git push origin main
+      - uses: pascalgn/automerge-action@v0.16.2
+      - name: Merge pull requests (automerge-action)
+        run: echo "Automerge action completed successfully"
+env:
+          GITHUB_TOKEN: "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"
+          URL: "https://github.com/whoami-anoint/probex/pull/6"
+          MERGE_LABELS: "automerge,!work in progress"
+          MERGE_REMOVE_LABELS: "automerge"
+          MERGE_METHOD: "squash"
+          MERGE_COMMIT_MESSAGE: "pull-request-description"
+          MERGE_FORKS: "false"
+          MERGE_RETRIES: "6"
+          MERGE_RETRY_SLEEP: "10000"
+          MERGE_REQUIRED_APPROVALS: "0"
+          UPDATE_LABELS: ""
+          UPDATE_METHOD: "rebase"
+          PULL_REQUEST: "6"
