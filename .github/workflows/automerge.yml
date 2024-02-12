@@ -14,8 +14,8 @@ jobs:
         run: echo "Automerge action completed successfully"
 env:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-          # MERGE_LABELS: "automerge,!work in progress"
-          # MERGE_REMOVE_LABELS: ""
+          MERGE_LABELS: "automerge,!work in progress"
+          MERGE_REMOVE_LABELS: ""
           MERGE_METHOD: "merge"
           MERGE_COMMIT_MESSAGE: "pull-request-description"
           MERGE_FORKS: "false"
