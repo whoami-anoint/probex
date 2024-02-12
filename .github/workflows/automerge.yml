@@ -17,6 +17,7 @@ on:
     types:
       - completed
   status: {}
+  run-name: Deploy to ${{ inputs.deploy_target }} by @${{ github.actor }}
 jobs:
   automerge:
     runs-on: ubuntu-latest
