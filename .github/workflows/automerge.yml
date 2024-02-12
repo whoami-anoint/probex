@@ -6,12 +6,9 @@ on:
     branches: [ "main" ]
 
 jobs:
-
   build:
-
     runs-on: ubuntu-latest
-
     steps:
-    - uses: pascalgn/automerge-action@v0.16.2
-    - name: Merge pull requests (automerge-action)
-      
+      - uses: pascalgn/automerge-action@v0.16.2
+      - name: Merge pull requests (automerge-action)
+        run: echo "Automerge action completed successfully"
