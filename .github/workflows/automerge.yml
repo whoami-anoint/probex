@@ -13,7 +13,7 @@ jobs:
       - name: Merge pull requests (automerge-action)
         run: echo "Automerge action completed successfully"
 env:
-          GITHUB_TOKEN: "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"
+          GITHUB_TOKEN: "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"
           URL: "https://github.com/whoami-anoint/probex/pull/6"
           MERGE_LABELS: "automerge,!work in progress"
           MERGE_REMOVE_LABELS: "automerge"
