@@ -1,4 +1,5 @@
 name: automerge
+
 on:
   push:
     branches: [ "dev" ]
@@ -8,10 +9,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: pascalgn/automerge-action@v0.16.2
-      - name: Merge pull requests (automerge-action)
-        run: echo "Automerge action completed successfully"
-env:
-          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           MERGE_LABELS: "automerge,!work in progress"
           MERGE_REMOVE_LABELS: ""
           MERGE_METHOD: "merge"
@@ -22,5 +21,8 @@ env:
           MERGE_REQUIRED_APPROVALS: "0"
           UPDATE_LABELS: ""
           UPDATE_METHOD: "merge"
-          BASE_BRANCHES : "main"
+          BASE_BRANCHES: "main"
+          # PULL_REQUEST: "4"
 
+      - name: Merge pull requests (automerge-action)
+        run: echo "Automerge action completed successfully"
