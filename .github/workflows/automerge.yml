@@ -1,28 +1,21 @@
-name: automerge
+name: Automerge dev to main
+
 on:
-  pull_request:
-    types:
-      - labeled
-      - unlabeled
-      - synchronize
-      - opened
-      - edited
-      - ready_for_review
-      - reopened
-      - unlocked
-  pull_request_review:
-    types:
-      - submitted
-  check_suite:
-    types:
-      - completed
-  status: {}
+  push:
+    branches:
+      - dev
+
 jobs:
   automerge:
     runs-on: ubuntu-latest
+
     steps:
-      - id: automerge
-        name: automerge
-        uses: "pascalgn/automerge-action@v0.16.2"
-        env:
-          GITHUB_TOKEN: "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"
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Merge changes into main
+        run: |
+          git fetch origin
+          git checkout main
+          git merge --no-ff origin/dev -m "Automatically merge changes from dev into main"
+          git push origin main
