@@ -23,3 +23,4 @@ env:
           UPDATE_LABELS: ""
           UPDATE_METHOD: "merge"
           BASE_BRANCHES : "main"
+
